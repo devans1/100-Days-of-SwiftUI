@@ -7,6 +7,31 @@
 
 import SwiftUI
 
+struct FlagImage: View {
+    var country: String
+    
+    var body: some View {
+        Image(country)
+            .renderingMode(.original)
+            .clipShape(Capsule())
+            .shadow(radius: 10)
+    }
+}
+
+//struct FlagView: ViewModifier {
+//    func body(content: Content) -> some View {
+//        .renderingMode(.original)
+//        .clipShape(Capsule())
+//        .shadow(radius: 10)
+//    }
+//}
+//
+//extension View {
+//    func flagStyle() -> View {
+//        modifier(FlagView())
+//    }
+//}
+
 struct ContentView: View {
     @State private var showingScore = false
     @State private var scoreTitle = ""
@@ -22,6 +47,8 @@ struct ContentView: View {
     @State private var gameOver = false
     
     let numberGames = 3
+    
+    
     
     var body: some View {
         
@@ -46,8 +73,15 @@ struct ContentView: View {
                             .font(.subheadline.weight(.heavy))
                         Text(countries[correctAnswer])
                             .font(.largeTitle.weight(.semibold))
-                        
-                        ForEach(0..<3) { number in
+
+                        Button {
+                                // flag was tapped
+                                flagTapped(0)
+                            } label: {
+                                FlagImage(country: countries[0])
+                            }
+
+                        ForEach(1..<3) { number in
                             Button {
                                 // flag was tapped
                                 flagTapped(number)
