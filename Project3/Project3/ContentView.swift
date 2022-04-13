@@ -58,6 +58,38 @@ extension View {
     }
 }
 
+struct BlueTitle : ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .font(.largeTitle)
+            .foregroundColor(.blue)
+    }
+}
+
+extension View {
+    func blueTitled() -> some View {
+        modifier(BlueTitle())
+    }
+}
+
+
+struct GridStack<Content: View>: View {
+    let rows: Int
+    let columns: Int
+    @ViewBuilder let content: (Int, Int) -> Content
+
+    var body: some View {
+        VStack {
+            ForEach(0..<rows, id: \.self) { row in
+                HStack {
+                    ForEach(0..<columns, id: \.self) { column in
+                        content(row, column)
+                    }
+                }
+            }
+        }
+    }
+}
 
 
 /// <#Description#>
@@ -72,6 +104,14 @@ struct ContentView: View {
 //                .modifier(Title())
                 .titleStyle()
                 .watermarked(with: "DE")
+            Text("New text")
+                .blueTitled()
+        }
+        GridStack(rows: 3, columns: 4) {row, col in
+//            HStack { not needed when add @ViewBuilder above
+                Image(systemName: "\(row * 4 + col).circle")
+                Text("R\(row)-C\(col)")
+//            }
         }
     }
 }
