@@ -20,6 +20,47 @@ struct CapsuleText: View {
     }
 }
 
+struct Title: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .font(.largeTitle)
+            .foregroundColor(.white)
+            .padding()
+            .background(.blue)
+            .clipShape(RoundedRectangle(cornerRadius: 10))
+    }
+}
+
+extension View {
+    func titleStyle() -> some View {
+        modifier(Title())
+    }
+}
+
+struct Watermark: ViewModifier {
+    var text: String
+
+    func body(content: Content) -> some View {
+        ZStack(alignment: .bottomTrailing) {
+            content
+            Text(text)
+                .font(.caption)
+                .foregroundColor(.primary)
+                .padding(5)
+                .background(.background)
+        }
+    }
+}
+
+extension View {
+    func watermarked(with text: String) -> some View {
+        modifier(Watermark(text: text))
+    }
+}
+
+
+
+/// <#Description#>
 struct ContentView: View {
     var body: some View {
         VStack {
@@ -27,6 +68,10 @@ struct ContentView: View {
                 .foregroundColor(.red)
             CapsuleText(capsuleText: "Second")
                 .foregroundStyle(.regularMaterial)
+            Text("Hmmmmm<->")
+//                .modifier(Title())
+                .titleStyle()
+                .watermarked(with: "DE")
         }
     }
 }
