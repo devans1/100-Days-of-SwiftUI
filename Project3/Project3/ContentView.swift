@@ -7,13 +7,25 @@
 
 import SwiftUI
 
+struct CapsuleText: View {
+    var capsuleText: String
+
+    var body: some View {
+        Text(capsuleText)
+            .font(.largeTitle)
+            .padding()
+            .foregroundColor(.white)
+            .background(.blue)
+            .clipShape(Capsule())
+    }
+}
+
 struct ContentView: View {
     var body: some View {
-        Button("Hello, world!") {
-            print(type(of: self.body))
+        VStack {
+            CapsuleText(capsuleText: "First")
+            CapsuleText(capsuleText: "Second")
         }
-        .frame(width: 200, height: 200)
-        .background(.red)
     }
 }
 
