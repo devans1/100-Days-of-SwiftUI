@@ -32,11 +32,14 @@ struct ContentView: View {
     @State private var numbers = [Int]()
     @State private var currentNumber = 1
 
+    @State private var tapCount = UserDefaults.standard.integer(forKey: "Tap")
 
     var body: some View {
 //        print("\(user.firstName) \(user.lastName)") ; return
         NavigationView {
             VStack {
+                Spacer()
+                Spacer()
                 List {
                     ForEach(numbers, id: \.self) {
                         Text("Row \($0)")
@@ -46,6 +49,11 @@ struct ContentView: View {
                 Button("Add Number") {
                     numbers.append(currentNumber)
                     currentNumber += 1
+                }
+                Spacer()
+                Button("Tap Count: \(tapCount)") {
+                    tapCount += 1
+                    UserDefaults.standard.set(tapCount, forKey: "Tap")
                 }
                 Spacer()
             }
