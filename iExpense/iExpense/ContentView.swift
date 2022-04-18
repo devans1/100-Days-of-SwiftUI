@@ -29,46 +29,32 @@ struct SecondView: View {
 }
 
 struct ContentView: View {
-    @StateObject private var user = User()
-    @State private var showingSheet = false
-    
     @State private var numbers = [Int]()
     @State private var currentNumber = 1
 
 
     var body: some View {
-        print("\(user.firstName) \(user.lastName)") ; return
-        VStack {
-            Spacer()
-            Button(action: {
-                showingSheet.toggle()
-            }, label: {
-                Text("Show sheet")
-            })
-            
-            Spacer()
-            Text("Your name is \(user.firstName) \(user.lastName).")
-
-            TextField("First name", text: $user.firstName)
-            TextField("Last name", text: $user.lastName)
-            Spacer()
-
-            List {
-                ForEach(numbers, id: \.self) {
-                    Text("Row \($0)")
+//        print("\(user.firstName) \(user.lastName)") ; return
+        NavigationView {
+            VStack {
+                List {
+                    ForEach(numbers, id: \.self) {
+                        Text("Row \($0)")
+                    }
+                    .onDelete(perform: removeRows)
                 }
-                .onDelete(perform: removeRows)
+                Button("Add Number") {
+                    numbers.append(currentNumber)
+                    currentNumber += 1
+                }
+                Spacer()
             }
-            Button("Add Number") {
-                numbers.append(currentNumber)
-                currentNumber += 1
-            }
-            Spacer()
+            .navigationTitle("onDelete()")
+            .toolbar(content: {
+                EditButton()
+            })
         }
-        .sheet(isPresented: $showingSheet) {
-            // contents of the sheet
-            SecondView(name: "@TwoStraws")
-        }
+
     }
 
     func removeRows(at offsets: IndexSet) {
