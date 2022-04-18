@@ -34,7 +34,7 @@ struct FlagImage: View {
 
 struct ContentView: View {
     @State private var showingScore = false
-    @State private var scoreTitle = ""
+    @State private var scoreTitle = "Let's begin"
 
     static let allCountries = ["Estonia", "France", "Germany", "Ireland", "Italy", "Nigeria", "Poland", "Russia", "Spain", "UK", "US"]
     @State private var countries = allCountries.shuffled()
@@ -42,16 +42,18 @@ struct ContentView: View {
     
     @State private var score = 0
     
-    @State private var guess = 0
+    @State private var guessCount = 0
     @State private var gameOverTitle = ""
     @State private var gameOver = false
     
-    let numberGames = 3
+    let numberGames = 5
     
-    
+    @State private var flagClickedIndex = -1
+    @State private var nextTry = true
     
     var body: some View {
-        
+        print("flagClickedIndex:\(flagClickedIndex) ") ; return
+
         ZStack {
             RadialGradient(stops: [
                 Gradient.Stop(color: Color(red: 0.1, green: 0.2, blue: 0.45), location: 0.3),
@@ -74,14 +76,7 @@ struct ContentView: View {
                         Text(countries[correctAnswer])
                             .font(.largeTitle.weight(.semibold))
 
-                        Button {
-                                // flag was tapped
-                                flagTapped(0)
-                            } label: {
-                                FlagImage(country: countries[0])
-                            }
-
-                        ForEach(1..<3) { number in
+                        ForEach(0..<3) { number in
                             Button {
                                 // flag was tapped
                                 flagTapped(number)
@@ -90,6 +85,10 @@ struct ContentView: View {
                                     .renderingMode(.original)
                                     .clipShape(Capsule())
                                     .shadow(radius: 10)
+                                    .rotation3DEffect(.degrees(flagClickedIndex == number ? 360 : 0), axis: (x: 0, y: 1, z: 0))
+                                    .opacity(flagClickedIndex == -1 || flagClickedIndex == number ? 1.0 : 0.25)
+                                    .scaleEffect(flagClickedIndex == -1 || flagClickedIndex == number ? 1.0 : 0.75)
+                                    .animation(.default, value: flagClickedIndex)
                             }
                         }
                     }
@@ -100,6 +99,9 @@ struct ContentView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 20))
 
                 Spacer()
+                Text("\(scoreTitle)")
+                    .foregroundColor(.white)
+                    .font(.title.bold())
                 Spacer()
 
                 Text("Score: \(score)")
@@ -112,7 +114,7 @@ struct ContentView: View {
             
         }
         .alert(scoreTitle, isPresented: $showingScore) {
-            Button("Continue", action: askQuestion)
+            Button("Continue", action: newTry)
         } message: {
             Text("Your score is \(score)")
         }
@@ -128,7 +130,10 @@ struct ContentView: View {
     }
     
     func flagTapped(_ number: Int) {
-        guess += 1
+        print("FlagTapped")
+        guessCount += 1
+        flagClickedIndex = number
+
         if number == correctAnswer {
             scoreTitle = "Correct, that's the flag for \(countries[number])"
             score += 1
@@ -137,24 +142,26 @@ struct ContentView: View {
             scoreTitle = "Wrong, that's the flag for \(countries[number])"
         }
 
-        if guess >= numberGames {
+        if guessCount >= numberGames {
             gameOver = true
-        } else {
-            showingScore = true
         }
+        showingScore = true;
+        //        newTry()
     }
     
-    func askQuestion() {
-        print("askQuestion called")
+    func newTry() {
+        print("newTry")
         countries.shuffle()
         correctAnswer = Int.random(in: 0...2)
+        flagClickedIndex = -1
+        showingScore = false
     }
     
     func newGame() {
         countries = ContentView.allCountries
-        askQuestion()
         score = 0
-        guess = 0
+        guessCount = 0
+        scoreTitle = "Let's begin"
     }
 }
 
