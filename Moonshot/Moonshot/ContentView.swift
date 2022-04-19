@@ -22,24 +22,34 @@ struct CustomText: View {
 
 struct ContentView: View {
     var body: some View {
-        ScrollView(.vertical) {
-            LazyVStack(spacing: 10) {
-                GeometryReader { geo in
-                    Image("Example")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: geo.size.width * 0.8)
-                        .frame(width: geo.size.width, height: geo.size.height)
+        NavigationView {
+//            ScrollView(.vertical) {
+                VStack(spacing: 10) {
+                    GeometryReader { geo in
+                        NavigationLink {
+                            Text("Detail View")
+                        } label: {
+                            Image("Example")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: geo.size.width * 0.8)
+                                .frame(width: geo.size.width, height: geo.size.height)
+                        }
+                    }
+                    .frame(width: 100, height: 100)
+                    List(0..<100) { row in
+//                    ForEach(0..<100) {row in
+                        NavigationLink {
+                            Text("Row \(row)")
+                        } label: {
+                            Text("Item \(row)")
+                        }
+                    }
+//                    .frame(maxWidth: .infinity)
                 }
-                .frame(width: 100, height: 100)
-
-                ForEach(0..<100) {
-                    CustomText("Item \($0)")
-                        .font(.title)
-                }
-                .frame(maxWidth: .infinity)
                 
-            }
+//            }
+            .navigationTitle("SwiftUI")
         }
     }
 }
