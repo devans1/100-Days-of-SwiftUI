@@ -7,76 +7,57 @@
 
 import SwiftUI
 
-class User: Codable {
-    var firstName = "Bilbo"
-    var lastName = "Baggins"
-}
-
-struct SecondView: View {
-    let name: String
-    @Environment(\.dismiss) var dismiss
-
-    var body: some View {
-        VStack {
-            Text("Hello, \(name)!")
-            Button(action: {
-                dismiss()
-            }, label: {
-                Text("Dismiss?")
-            })
-        }
-    }
-}
-
 struct ContentView: View {
-    @State private var numbers = [Int]()
-    @State private var currentNumber = 1
-
-    @AppStorage("tapCount") private var tapCount = 0
-
-    @State private var user = User()
+    @StateObject var expenses = Expenses()
     
+    @State private var showingAddExpense = false
+        
     var body: some View {
-//        print("\(user.firstName) \(user.lastName)") ; return
+        //        print("\(user.firstName) \(user.lastName)") ; return
         NavigationView {
-            VStack {
-                Spacer()
-                Spacer()
-                List {
-                    ForEach(numbers, id: \.self) {
-                        Text("Row \($0)")
-                    }
-                    .onDelete(perform: removeRows)
-                }
-                Button("Add Number") {
-                    numbers.append(currentNumber)
-                    currentNumber += 1
-                }
-                Spacer()
-                Button("Tap Count: \(tapCount)") {
-                    tapCount += 1
-                    UserDefaults.standard.set(tapCount, forKey: "Tap")
-                }
-                Spacer()
-                Button("Save User") {
-                    let encoder = JSONEncoder()
-
-                    if let data = try? encoder.encode(user) {
-                        UserDefaults.standard.set(data, forKey: "UserData")
-                    }
-                }
-                Spacer()
+            List {
+                ExpenseSectionView(title: "Business",
+                                   expenses: expenses.businessItems,
+                                   deleteItems: removeBusinessItems)
+                ExpenseSectionView(title: "Personal",
+                                   expenses: expenses.personalItems,
+                                   deleteItems: removePersonalItems)
             }
-            .navigationTitle("onDelete()")
+            .navigationTitle("iExpense")
             .toolbar(content: {
-                EditButton()
+                Button {
+                    showingAddExpense = true
+                } label: {
+                    Image(systemName: "plus")
+                }
             })
         }
-
+        .sheet(isPresented: $showingAddExpense) {
+            AddView(expenses: expenses)
+        }
+        
+    }
+    
+    func removeItems(at offsets: IndexSet, in inputArray: [ExpenseItem]) {
+        var objectsToDelete = IndexSet()
+        
+        for offset in offsets {
+            let item = inputArray[offset]
+            
+            if let index = expenses.items.firstIndex(of: item) {
+                objectsToDelete.insert(index)
+            }
+        }
+        
+        expenses.items.remove(atOffsets: objectsToDelete)
+    }
+    
+    func removePersonalItems(at offsets: IndexSet) {
+        removeItems(at: offsets, in: expenses.personalItems)
     }
 
-    func removeRows(at offsets: IndexSet) {
-        numbers.remove(atOffsets: offsets)
+    func removeBusinessItems(at offsets: IndexSet) {
+        removeItems(at: offsets, in: expenses.businessItems)
     }
 }
 

@@ -14,6 +14,12 @@
 		61ACD151280E01B40009C806 /* iExpenseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61ACD150280E01B40009C806 /* iExpenseTests.swift */; };
 		61ACD15B280E01B40009C806 /* iExpenseUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61ACD15A280E01B40009C806 /* iExpenseUITests.swift */; };
 		61ACD15D280E01B40009C806 /* iExpenseUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61ACD15C280E01B40009C806 /* iExpenseUITestsLaunchTests.swift */; };
+		61ACD16A280E2E550009C806 /* ExpenseItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61ACD169280E2E550009C806 /* ExpenseItem.swift */; };
+		61ACD16C280E2E9A0009C806 /* Expenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61ACD16B280E2E9A0009C806 /* Expenses.swift */; };
+		61ACD16E280E398F0009C806 /* AddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61ACD16D280E398F0009C806 /* AddView.swift */; };
+		61ACD170280E5EBA0009C806 /* FormatStyle-LocalCurrency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61ACD16F280E5EBA0009C806 /* FormatStyle-LocalCurrency.swift */; };
+		61ACD172280E60360009C806 /* View-ExpenseStyling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61ACD171280E60360009C806 /* View-ExpenseStyling.swift */; };
+		61ACD174280E65910009C806 /* ExpenseSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61ACD173280E65910009C806 /* ExpenseSectionView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +50,12 @@
 		61ACD156280E01B40009C806 /* iExpenseUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iExpenseUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		61ACD15A280E01B40009C806 /* iExpenseUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iExpenseUITests.swift; sourceTree = "<group>"; };
 		61ACD15C280E01B40009C806 /* iExpenseUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iExpenseUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		61ACD169280E2E550009C806 /* ExpenseItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseItem.swift; sourceTree = "<group>"; };
+		61ACD16B280E2E9A0009C806 /* Expenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Expenses.swift; sourceTree = "<group>"; };
+		61ACD16D280E398F0009C806 /* AddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddView.swift; sourceTree = "<group>"; };
+		61ACD16F280E5EBA0009C806 /* FormatStyle-LocalCurrency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormatStyle-LocalCurrency.swift"; sourceTree = "<group>"; };
+		61ACD171280E60360009C806 /* View-ExpenseStyling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View-ExpenseStyling.swift"; sourceTree = "<group>"; };
+		61ACD173280E65910009C806 /* ExpenseSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseSectionView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +108,12 @@
 			children = (
 				61ACD13F280E01B30009C806 /* iExpenseApp.swift */,
 				61ACD141280E01B30009C806 /* ContentView.swift */,
+				61ACD16D280E398F0009C806 /* AddView.swift */,
+				61ACD173280E65910009C806 /* ExpenseSectionView.swift */,
+				61ACD169280E2E550009C806 /* ExpenseItem.swift */,
+				61ACD16B280E2E9A0009C806 /* Expenses.swift */,
+				61ACD171280E60360009C806 /* View-ExpenseStyling.swift */,
+				61ACD16F280E5EBA0009C806 /* FormatStyle-LocalCurrency.swift */,
 				61ACD143280E01B40009C806 /* Assets.xcassets */,
 				61ACD145280E01B40009C806 /* Preview Content */,
 			);
@@ -257,7 +275,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				61ACD16C280E2E9A0009C806 /* Expenses.swift in Sources */,
 				61ACD142280E01B30009C806 /* ContentView.swift in Sources */,
+				61ACD16E280E398F0009C806 /* AddView.swift in Sources */,
+				61ACD172280E60360009C806 /* View-ExpenseStyling.swift in Sources */,
+				61ACD174280E65910009C806 /* ExpenseSectionView.swift in Sources */,
+				61ACD170280E5EBA0009C806 /* FormatStyle-LocalCurrency.swift in Sources */,
+				61ACD16A280E2E550009C806 /* ExpenseItem.swift in Sources */,
 				61ACD140280E01B30009C806 /* iExpenseApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
