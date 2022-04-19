@@ -12,6 +12,7 @@ struct CustomText: View {
 
     var body: some View {
         Text(text)
+            .font(.caption2)
     }
 
     init(_ text: String) {
@@ -20,10 +21,22 @@ struct CustomText: View {
     }
 }
 
+//let layout = [
+//    GridItem(.fixed(80)),
+//    GridItem(.fixed(80)),
+//    GridItem(.fixed(80))
+//]
+
+let layout = [
+    GridItem(.adaptive(minimum: 80))
+]
+
+
 struct ContentView: View {
     var body: some View {
         NavigationView {
-//            ScrollView(.vertical) {
+            ScrollView(.vertical) {
+//            ScrollView(.horizontal) {
                 VStack(spacing: 10) {
                     GeometryReader { geo in
                         NavigationLink {
@@ -37,18 +50,14 @@ struct ContentView: View {
                         }
                     }
                     .frame(width: 100, height: 100)
-                    List(0..<100) { row in
-//                    ForEach(0..<100) {row in
-                        NavigationLink {
-                            Text("Row \(row)")
-                        } label: {
-                            Text("Item \(row)")
+//                    LazyHGrid(rows: layout) {
+                    LazyVGrid(columns: layout) {
+                        ForEach(0..<1000) { row in
+                            CustomText("Item \(row)")
                         }
                     }
-//                    .frame(maxWidth: .infinity)
                 }
-                
-//            }
+            }
             .navigationTitle("SwiftUI")
         }
     }
