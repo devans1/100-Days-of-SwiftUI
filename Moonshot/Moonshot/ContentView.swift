@@ -7,60 +7,51 @@
 
 import SwiftUI
 
-struct CustomText: View {
-    let text: String
-
-    var body: some View {
-        Text(text)
-            .font(.caption2)
-    }
-
-    init(_ text: String) {
-        print("Creating a new CustomText \(text)")
-        self.text = text
-    }
-}
-
-//let layout = [
-//    GridItem(.fixed(80)),
-//    GridItem(.fixed(80)),
-//    GridItem(.fixed(80))
-//]
-
-let layout = [
-    GridItem(.adaptive(minimum: 80))
-]
-
 
 struct ContentView: View {
+    @AppStorage("showingGrid") private var showingGrid = true
+
+    private var buttonTitle: String {
+        showingGrid ? "List view" : "Grid view"
+    }
+
+    let columns = [
+        GridItem(.adaptive(minimum: 150))
+    ]
+    
     var body: some View {
+        let astronauts: [String : Astronaut] = Bundle.main.decode("astronauts.json")
+        let missions: [Mission] = Bundle.main.decode("missions.json")
+        
         NavigationView {
-            ScrollView(.vertical) {
-//            ScrollView(.horizontal) {
-                VStack(spacing: 10) {
-                    GeometryReader { geo in
-                        NavigationLink {
-                            Text("Detail View")
-                        } label: {
-                            Image("Example")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: geo.size.width * 0.8)
-                                .frame(width: geo.size.width, height: geo.size.height)
-                        }
-                    }
-                    .frame(width: 100, height: 100)
-//                    LazyHGrid(rows: layout) {
-                    LazyVGrid(columns: layout) {
-                        ForEach(0..<1000) { row in
-                            CustomText("Item \(row)")
-                        }
-                    }
+            Group {
+                if (showingGrid) {
+                    ListLayout(missions: missions, astronauts: astronauts)
+                } else {
+                    GridLayout(missions: missions, astronauts: astronauts)
                 }
             }
-            .navigationTitle("SwiftUI")
+            .navigationTitle("Moonshot")
+            .background(.darkBackground)
+            .preferredColorScheme(.dark)
+            .toolbar(content: {
+                Button {
+                    showingGrid.toggle()
+                } label: {
+                    if showingGrid {
+                        Label("Show as grid", systemImage: "square.grid.2x2")
+                    } else {
+                        Label("Show as table", systemImage: "list.dash")
+                    }
+                        
+//                    Text(buttonTitle)
+//                        .foregroundColor(.white)
+                }
+            })
+            
         }
     }
+    
 }
 
 struct ContentView_Previews: PreviewProvider {
