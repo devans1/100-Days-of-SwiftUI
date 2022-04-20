@@ -23,6 +23,7 @@ struct MissionView: View {
 
                     if let date = mission.launchDate {
                         Label(date.formatted(date: .complete, time: .omitted), systemImage: "calendar")
+                            .padding(5)
                     }
                     
                     VStack(alignment: .leading) {
@@ -68,7 +69,7 @@ struct MissionView_Previews: PreviewProvider {
     static let astronauts: [String : Astronaut] = Bundle.main.decode("astronauts.json")
 
     static var previews: some View {
-        MissionView(mission: missions[0], astronauts: astronauts)
+        MissionView(mission: missions[1], astronauts: astronauts)
             .preferredColorScheme(.dark)
     }
 }
