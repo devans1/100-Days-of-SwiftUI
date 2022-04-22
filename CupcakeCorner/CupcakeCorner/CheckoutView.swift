@@ -14,6 +14,9 @@ struct CheckoutView: View {
     @State private var confirmationMessage = ""
     @State private var showingConfirmation = false
 
+    @State private var showingOrderFailed = false
+
+    
     var body: some View {
         
         ScrollView {
@@ -27,12 +30,17 @@ struct CheckoutView: View {
                 }
                 .frame(height: 233) // reserve space for the image and then it wont snap in
 
-                Text("Your total is \(order.cost, format: .currency(code: "USD"))")
+                Text("Your total is \(order.orderDetails.cost, format: .currency(code: "USD"))")
                     .font(.title)
 
                 Button("Place Order") {
                     Task {
-                        await placeOrder()
+                        do {
+                            try await placeOrder()
+                        } catch {
+                            confirmationMessage = "Your order for \(order.orderDetails.quantity)x \(Order.types[order.orderDetails.type].lowercased()) failed!  \(error.localizedDescription)"
+                            showingOrderFailed = true
+                        }
                     }
                 }
                 .padding()
@@ -45,12 +53,17 @@ struct CheckoutView: View {
         } message: {
             Text(confirmationMessage)
         }
-        
+        .alert("Order Failed!", isPresented: $showingOrderFailed) {
+            Button("OK") { }
+        } message: {
+            Text(confirmationMessage)
+        }
+
     }
     
-    func placeOrder() async {
+    func placeOrder() async throws {
         
-        guard let encoded = try? JSONEncoder().encode(order) else {
+        guard let encoded = try? JSONEncoder().encode(order.orderDetails) else {
             print("Failed to encode order")
             return
         }
@@ -63,12 +76,17 @@ struct CheckoutView: View {
         do {
             let (data, _) = try await URLSession.shared.upload(for: request, from: encoded)
             // handle the result
-            let decodedOrder = try JSONDecoder().decode(Order.self, from: data)
+            let decodedOrder = try JSONDecoder().decode(OrderDetails.self, from: data)
             confirmationMessage = "Your order for \(decodedOrder.quantity)x \(Order.types[decodedOrder.type].lowercased()) cupcakes is on its way!"
             showingConfirmation = true
             
         } catch {
             print("Checkout failed.")
+            
+            //
+            /// SHOULD HAVE DONE ALL THE WORK HERE!!!!! Not passed on the error !!!!
+            //
+            throw error
         }
         
         
