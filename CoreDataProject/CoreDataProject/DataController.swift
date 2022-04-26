@@ -2,7 +2,7 @@
 //  DataController.swift
 //  CoreDataProject
 //
-//  Created by David Evans on 26/4/2022.
+//  Created by David Evans on 22/4/2022.
 //
 
 import Foundation
@@ -10,7 +10,7 @@ import CoreData
 
 
 class DataController: ObservableObject {
-    let container = NSPersistentContainer(name: "CoreDataProject")
+    let container = NSPersistentContainer(name: "Bookworm")
     
     init() {
         container.loadPersistentStores { description, error in
