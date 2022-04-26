@@ -11,7 +11,7 @@ import SwiftUI
 struct ContentView: View {
     @Environment(\.managedObjectContext) var moc
     @FetchRequest(sortDescriptors: [
-        SortDescriptor(\.title),
+        SortDescriptor(\.title, order: .forward),
 //        SortDescriptor(\.title, order: .reverse),
         SortDescriptor(\.author)
     ]) var books: FetchedResults<Book>
