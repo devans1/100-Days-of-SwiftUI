@@ -11,6 +11,12 @@ import SwiftUI
 struct FilteredList<T: NSManagedObject, Content: View>: View {
     @FetchRequest var fetchRequest: FetchedResults<T>
     
+    enum PredicateType: String {
+        case beginsWith = "BEGINSWITH",
+             contains = "CONTAINS"
+        
+    }
+    
     let content: (T) -> Content  // one
     
     var body: some View {
@@ -19,9 +25,13 @@ struct FilteredList<T: NSManagedObject, Content: View>: View {
         }
     }
     
-    init(filterKey: String, filterValue: String, @ViewBuilder content: @escaping (T) -> Content) {
-        _fetchRequest = FetchRequest<T>(sortDescriptors: [],
-                                             predicate: NSPredicate(format: "%K BEGINSWITH %@", filterKey, filterValue))
+    init(filterKey: String,
+         filterValue: String,
+         filterPredicate: PredicateType,
+         sortDescriptors: [SortDescriptor<T>],
+         @ViewBuilder content: @escaping (T) -> Content) {
+        _fetchRequest = FetchRequest<T>(sortDescriptors: sortDescriptors,
+                                        predicate: NSPredicate(format: "%K \(filterPredicate.rawValue) %@", filterKey, filterValue))
         self.content = content
     }
 }

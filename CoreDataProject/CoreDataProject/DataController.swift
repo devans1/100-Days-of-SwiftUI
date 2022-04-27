@@ -5,8 +5,8 @@
 //  Created by David Evans on 22/4/2022.
 //
 
-import Foundation
 import CoreData
+import Foundation
 
 
 class DataController: ObservableObject {
@@ -16,7 +16,10 @@ class DataController: ObservableObject {
         container.loadPersistentStores { description, error in
             if let error = error {
                 print("Core Data failed to load: \(error.localizedDescription)")
+                return
             }
+            
+            self.container.viewContext.mergePolicy=NSMergePolicy.mergeByPropertyObjectTrump
         }
     }
 }
