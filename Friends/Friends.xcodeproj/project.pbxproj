@@ -13,6 +13,8 @@
 		61ACD2E5281907430009C806 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 61ACD2E4281907430009C806 /* Preview Assets.xcassets */; };
 		61ACD2EC2819077E0009C806 /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61ACD2EB2819077E0009C806 /* Friend.swift */; };
 		61ACD2EE281907890009C806 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61ACD2ED281907890009C806 /* User.swift */; };
+		61ACD2F22819F85A0009C806 /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61ACD2F12819F85A0009C806 /* UserView.swift */; };
+		61ACD2F4281A054C0009C806 /* UserLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61ACD2F3281A054C0009C806 /* UserLabelView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +25,8 @@
 		61ACD2E4281907430009C806 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		61ACD2EB2819077E0009C806 /* Friend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
 		61ACD2ED281907890009C806 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		61ACD2F12819F85A0009C806 /* UserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserView.swift; sourceTree = "<group>"; };
+		61ACD2F3281A054C0009C806 /* UserLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLabelView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,8 +61,10 @@
 			children = (
 				61ACD2DD281907410009C806 /* FriendsApp.swift */,
 				61ACD2DF281907410009C806 /* ContentView.swift */,
-				61ACD2EB2819077E0009C806 /* Friend.swift */,
+				61ACD2F3281A054C0009C806 /* UserLabelView.swift */,
+				61ACD2F12819F85A0009C806 /* UserView.swift */,
 				61ACD2ED281907890009C806 /* User.swift */,
+				61ACD2EB2819077E0009C806 /* Friend.swift */,
 				61ACD2E1281907430009C806 /* Assets.xcassets */,
 				61ACD2E3281907430009C806 /* Preview Content */,
 			);
@@ -144,7 +150,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				61ACD2EE281907890009C806 /* User.swift in Sources */,
+				61ACD2F4281A054C0009C806 /* UserLabelView.swift in Sources */,
 				61ACD2EC2819077E0009C806 /* Friend.swift in Sources */,
+				61ACD2F22819F85A0009C806 /* UserView.swift in Sources */,
 				61ACD2E0281907410009C806 /* ContentView.swift in Sources */,
 				61ACD2DE281907410009C806 /* FriendsApp.swift in Sources */,
 			);
