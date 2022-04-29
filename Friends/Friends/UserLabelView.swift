@@ -15,15 +15,10 @@ struct UserLabelView: View {
         }
         
     }
-//    let image: Image = Image(systemName: "circle")
-//        .foregroundColor(.green)
-
     
     var body: some View {
         
         HStack {
-//            Label("\(user.name)", systemImage: "circle.fill")
-//                .frame(maxWidth: .infinity, alignment: .leading)
                 Label {
                 Text("\(user.name)")
             } icon: {
