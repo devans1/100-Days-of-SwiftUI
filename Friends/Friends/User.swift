@@ -27,7 +27,7 @@ struct User: Identifiable, Codable {
     }
     var tagsList: String {
         get {
-            tags.joined(separator: ", ")
+            return tags.joined(separator: ",")
         }
     }
 
@@ -35,10 +35,31 @@ struct User: Identifiable, Codable {
         get {
             friends.map {
                 $0.name
-            }.joined(separator: ", ")
+            }.joined(separator: ",")
         }
     }
 
+    
     static let example = User(id: UUID(), isActive: true, name: "Paul Hudson", age: 35, company: "Hudson Heavy Industries", email: "paul@hackingwithswift.com", address: "555, Taylor Swift Avenue, Nashville, Tennessee", about: "Paul writes about Swift and iOS development.", registered: Date.now, tags: ["swift", "swiftui", "dogs"], friends: [])
 
+}
+
+extension User {
+    
+    init(cachedUser: CachedUser) {
+        self.id = cachedUser.id ?? UUID()
+        self.isActive = cachedUser.isActive
+        self.name = cachedUser.wrappedName
+        self.age = Int(cachedUser.age)
+        self.company = cachedUser.company ?? "company is nil"
+        self.email = cachedUser.email ?? "email is nil"
+        self.address = cachedUser.address ?? "address is nil"
+        self.about = cachedUser.about ?? "about is nil"
+        self.registered = cachedUser.registered ?? Date.distantPast
+        self.tags = cachedUser.tags?.components(separatedBy: ",") ?? []
+        self.friends = cachedUser.friendArray.map {
+            Friend(cachedFriend: $0)
+        }
+    }
+    
 }

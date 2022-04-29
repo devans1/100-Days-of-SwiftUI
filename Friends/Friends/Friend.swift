@@ -7,7 +7,15 @@
 
 import Foundation
 
-struct Friend : Identifiable, Codable {
-    let id: UUID
+public struct Friend : Identifiable, Codable, Hashable {
+    public let id: UUID
     var name: String
+}
+
+extension Friend {
+    
+    init(cachedFriend: CachedFriend) {
+        self.id = cachedFriend.id ?? UUID()
+        self.name = cachedFriend.wrappedName
+    }
 }
