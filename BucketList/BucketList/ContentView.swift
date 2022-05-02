@@ -45,8 +45,8 @@ struct ContentView: View {
                     }
                 }
             }
+            .navigationTitle("London Explorer")
         }
-        .navigationTitle("London Explorer")
     }
 
 }
