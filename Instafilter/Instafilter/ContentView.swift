@@ -5,42 +5,129 @@
 //  Created by David Evans on 30/4/2022.
 //
 
+import CoreImage
+import CoreImage.CIFilterBuiltins
 import SwiftUI
 
 struct ContentView: View {
     @State private var image: Image?
-    @State private var inputImage: UIImage?
-    @State private var showingImagePicker = false
-
+    @State private var filterIntensity = 0.5
     
-    var body: some View {
-        VStack {
-            image?
-                .resizable()
-                .scaledToFit()
-            
-            Button("Select Image") {
-                showingImagePicker = true
-            }
-            Button("Save Image") {
-                guard let inputImage = inputImage else { return }
-                
-                let imageSaver = ImageSaver()
-                imageSaver.writeToPhotoAlbum(image: inputImage)
+    @State private var showingImagePicker = false
+    @State private var inputImage: UIImage?
+    @State private var processedImage: UIImage?
 
+//    @State private var currentFilter = CIFilter.sepiaTone()
+    @State private var currentFilter: CIFilter = CIFilter.sepiaTone()
+    let context = CIContext()
+    
+    @State private var showingFilterSheet = false
+        
+    var body: some View {
+        NavigationView {
+            VStack {
+                ZStack {
+                    Rectangle()
+                        .fill(.secondary)
+                    
+                    Text("Tap to select a picture")
+                        .foregroundColor(.white)
+                        .font(.headline)
+                    
+                    image?
+                        .resizable()
+                        .scaledToFit()
+                }
+                .onTapGesture {
+                    // select an image
+                    showingImagePicker = true
+                }
+                
+                HStack {
+                    Text("Intensity")
+                    Slider(value: $filterIntensity)
+                        .onChange(of: filterIntensity) { _ in applyProcessing() }
+                }
+                .padding(.vertical)
+                
+                HStack {
+                    Button("Change Filter") {
+                        // change filter
+                        showingFilterSheet = true
+                    }
+                    
+                    Spacer()
+                    
+                    Button("Save", action: save)
+                        .disabled(inputImage == nil)
+                }
+            }
+            .padding([.horizontal, .bottom])
+            .navigationTitle("Instafilter")
+            .onChange(of: inputImage) { _ in loadImage() }
+            .sheet(isPresented: $showingImagePicker) {
+                ImagePicker(image: $inputImage)
+            }
+            .confirmationDialog("Select a filter", isPresented: $showingFilterSheet) {
+                // dialog here
+                Button("Crystallize") { setFilter(CIFilter.crystallize()) }
+                Button("Edges") { setFilter(CIFilter.edges()) }
+                Button("Gaussian Blur") { setFilter(CIFilter.gaussianBlur()) }
+                Button("Pixellate") { setFilter(CIFilter.pixellate()) }
+                Button("Sepia Tone") { setFilter(CIFilter.sepiaTone()) }
+                Button("Unsharp Mask") { setFilter(CIFilter.unsharpMask()) }
+                Button("Vignette") { setFilter(CIFilter.vignette()) }
+                Button("AffineTile") { setFilter(CIFilter.affineTile()) }
+                Button("Cancel", role: .cancel) { }
             }
         }
-        .sheet(isPresented: $showingImagePicker) {
-            ImagePicker(image: $inputImage)
+    }
+
+    func loadImage() {
+//        image = Image(uiImage: inputImage)
+        guard let inputImage = inputImage else { return }
+        
+        let beginImage = CIImage(image: inputImage)
+        currentFilter.setValue(beginImage, forKey: kCIInputImageKey)
+        applyProcessing()
+    }
+
+    func save() {
+        guard let processedImage = processedImage else { return }
+
+        let imageSaver = ImageSaver()
+        
+        imageSaver.successHandler = {
+            print("Success!")
         }
-        .onChange(of: inputImage) { _ in loadImage() }
+        imageSaver.errorHandler = {
+            print("Oops: \($0.localizedDescription)")
+        }
+        
+        imageSaver.writeToPhotoAlbum(image: processedImage)
     }
     
-    func loadImage() {
-        guard let inputImage = inputImage else { return }
-        image = Image(uiImage: inputImage)
+    func applyProcessing() {
+//        currentFilter.intensity = Float(filterIntensity)
+//        currentFilter.setValue(filterIntensity, forKey: kCIInputIntensityKey)
+        let inputKeys = currentFilter.inputKeys
+
+        if inputKeys.contains(kCIInputIntensityKey) { currentFilter.setValue(filterIntensity, forKey: kCIInputIntensityKey) }
+        if inputKeys.contains(kCIInputRadiusKey) { currentFilter.setValue(filterIntensity * 200, forKey: kCIInputRadiusKey) }
+        if inputKeys.contains(kCIInputScaleKey) { currentFilter.setValue(filterIntensity * 10, forKey: kCIInputScaleKey) }
         
-//        UIImageWriteToSavedPhotosAlbum(inputImage, nil, nil, nil)
+        guard let outputImage = currentFilter.outputImage else { return }
+
+        if let cgimg = context.createCGImage(outputImage, from: outputImage.extent) {
+            let uiImage = UIImage(cgImage: cgimg)
+            image = Image(uiImage: uiImage)
+            processedImage = uiImage
+        }
+    }
+    
+    func setFilter(_ filter: CIFilter) {
+        currentFilter = filter
+        loadImage()
     }
     
 }
