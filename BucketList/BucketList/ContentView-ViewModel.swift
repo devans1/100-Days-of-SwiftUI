@@ -18,6 +18,7 @@ extension ContentView {
         @Published private(set) var locations: [Location]
         @Published var selectedPlace: Location?
         @Published var isUnlocked = false
+        @Published var bioAuthenticationFailed = false
 
         let savePath = FileManager.documentsDirectory.appendingPathComponent("SavedPlaces")
                 
@@ -67,23 +68,35 @@ extension ContentView {
                 
                 context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { success, authenticationError in
                     
-                    if success {
-//                        Task {  // create a background task and then wait for MainActor to run this closure - not the best as jumping between threads
-//                            await MainActor.run {
-//                                self.isUnlocked = true
-//                            }
-//                        }
-                        Task { @MainActor in
+                    Task { @MainActor in
+                        if success {
                             self.isUnlocked = true
+                        } else {
+                            
+                            // error
+                            guard let authenticationError = authenticationError else {
+                                return
+                            }
+
+                            let err = LAError.Code(rawValue: authenticationError._code)!
+
+                            switch err {
+                            case LAError.Code.userCancel:
+                                self.isUnlocked = false
+                            default:
+                                self.bioAuthenticationFailed = true
+                            }
+                            
+                            print("Bio Authentication Failed \(authenticationError.localizedDescription)")
                         }
-                    } else {
-                        // error
                     }
                 }
             } else {
                 // no biometrics
+                print("No biometrics")
+                self.bioAuthenticationFailed = true
             }
         }
-        
+            
     }
 }
