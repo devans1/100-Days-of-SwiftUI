@@ -25,16 +25,64 @@ struct ContentView: View {
     
     @State private var selectedPicture = Int.random(in: 0...3)
     
+    @State private var value = 10
+    
     var body: some View {
-        Image(pictures[selectedPicture])
-            .resizable()
-            .scaledToFit()
-            .onTapGesture {
-                selectedPicture = Int.random(in: 0...3)
+        VStack {
+            
+            Image(decorative: "nicolas-tissot-335096")
+                .resizable()
+                .scaledToFit()
+                .accessibilityHidden(true)
+            
+            Spacer()
+            VStack {
+                Text("Value: \(value)")
+
+                Button("Increment") {
+                    value += 1
+                }
+
+                Button("Decrement") {
+                    value -= 1
+                }
             }
-            .accessibilityLabel(labels[selectedPicture])
-            .accessibilityAddTraits(.isButton)
-            .accessibilityRemoveTraits(.isImage)
+            .accessibilityElement()
+            .accessibilityLabel("Value")
+            .accessibilityValue(String(value))
+            .accessibilityAdjustableAction { direction in
+                switch direction {
+                case .increment:
+                    value += 1
+                case .decrement:
+                    value -= 1
+                default:
+                    print("Not handled.")
+                }
+            }
+            
+            Spacer()
+            
+            VStack {
+                Text("Your score is")
+                Text("1000")
+                    .font(.title)
+            }
+            .accessibilityElement(children: .ignore)    // these are the default parameters
+            .accessibilityLabel("Your score is 1000")
+
+            Spacer()
+            
+            Image(pictures[selectedPicture])
+                .resizable()
+                .scaledToFit()
+                .onTapGesture {
+                    selectedPicture = Int.random(in: 0...3)
+                }
+                .accessibilityLabel(labels[selectedPicture])
+                .accessibilityAddTraits(.isButton)
+                .accessibilityRemoveTraits(.isImage)
+        }
 
     }
 }
