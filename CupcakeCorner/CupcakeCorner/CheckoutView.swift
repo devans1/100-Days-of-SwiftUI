@@ -29,6 +29,7 @@ struct CheckoutView: View {
                     ProgressView()
                 }
                 .frame(height: 233) // reserve space for the image and then it wont snap in
+                .accessibilityHidden(true)
 
                 Text("Your total is \(order.orderDetails.cost, format: .currency(code: "USD"))")
                     .font(.title)

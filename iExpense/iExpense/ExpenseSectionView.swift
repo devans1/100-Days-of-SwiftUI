@@ -27,7 +27,12 @@ struct ExpenseSectionView: View {
                     Text(item.amount, format: .localCurrency)
                         .style(for: item)
                 }
-                .foregroundColor((item.amount>10 ? .red : .primary))
+                .foregroundColor((item.amount>200 ? .red : .primary))
+                .accessibilityElement(children: .ignore)
+//                .accessibilityLabel("\(item.name) expense of \(item.itemDollars) dollars and \(item.itemCents) cents") // my attempt
+                .accessibilityLabel("\(item.name), \(item.amount.formatted(.currency(code: "USD")))") // this works OK, but localise
+                .accessibilityLabel("\(item.name), \(item.formattedAmount)") // this is best
+                .accessibilityHint("for \(item.type)")
             }
             .onDelete(perform: deleteItems)
         }

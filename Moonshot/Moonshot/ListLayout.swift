@@ -23,6 +23,7 @@ struct ListLayout: View {
                         .scaledToFit()
                         .frame(width: 40, height: 40)
                         .padding()
+                        .accessibilityHidden(true)
                     VStack(alignment: .leading) {
                         Text(mission.displayName)
                             .font(.headline)
@@ -32,18 +33,13 @@ struct ListLayout: View {
                             .foregroundColor(.white.opacity(0.5))
                     }
                 }
-//                .frame(maxWidth: .infinity, maxHeight: .infinity)
-//                .background(.lightBackground)
-//                .clipShape(RoundedRectangle(cornerRadius: 10))
-//                .overlay(
-//                    RoundedRectangle(cornerRadius: 10)
-//                        .stroke(.lightBackground)
-//                )
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("\(mission.displayName) mission \(mission.launchDate != nil ? "launched on \(mission.formattedLaunchDate)" : "" ) ")
             }
             .listRowBackground(Color.darkBackground)
+            
         }
         .listStyle(.plain)
-
     }
 }
 

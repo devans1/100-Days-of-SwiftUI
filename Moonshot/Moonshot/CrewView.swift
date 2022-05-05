@@ -33,10 +33,12 @@ struct CrewView: View {
                                     Capsule()
                                         .strokeBorder(.white, lineWidth: 1)
                                 }
+                                .accessibilityHidden(true)
                             VStack {
                                 Text(crewMember.astronaut.name)
                                     .foregroundColor(.white)
                                     .font(.headline)
+                                    .accessibilityLabel(crewMember.astronaut.name.replacingOccurrences(of: ".", with: " ")) // remove hte dots to stop it pausing after full stops
                                 Text(crewMember.role)
                                     .foregroundColor(.secondary)
                                     .font(.caption)

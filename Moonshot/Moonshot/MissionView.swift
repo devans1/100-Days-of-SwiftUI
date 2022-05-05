@@ -20,12 +20,15 @@ struct MissionView: View {
                         .scaledToFit()
                         .frame(maxWidth: geometry.size.width * 0.6)
                         .padding(.top)
+//                        .accessibilityHidden(true)
+                        .accessibilityLabel("The mission badge for \(mission.displayName)") // see solution where adds a description in the JSON!!
 
                     if let date = mission.launchDate {
                         Label(date.formatted(date: .complete, time: .omitted), systemImage: "calendar")
                             .padding(5)
+                            .accessibilityHidden(true)
                     }
-                    
+
                     VStack(alignment: .leading) {
 
                         DividerView()

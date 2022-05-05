@@ -12,4 +12,17 @@ struct ExpenseItem: Identifiable, Codable, Equatable {
     let name: String
     let type: String
     let amount: Double
+    
+    var formattedAmount: String {
+        self.amount.formatted(.localCurrency)
+    }
+    
+//    var itemDollars: Int {
+//        Int(self.amount)
+//    }
+//
+//    var itemCents: Int {
+//        Int( ((self.amount-Double(self.itemDollars))*100).rounded() )
+//    }
+
 }
