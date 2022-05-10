@@ -94,7 +94,7 @@ day = Weekday.friday
 
 // OK made a change
 
-// Some test stuff - good way of sorting thought.
+// Some test stuff - good way of sorting though.
 let files = ["N10-13-1", "N11-3-2", "N3-2-1"]
 
 let custom = files.sorted { (lhs: String, rhs: String) -> Bool in

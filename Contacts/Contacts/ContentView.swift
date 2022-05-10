@@ -11,32 +11,29 @@ import CoreData
 struct ContentView: View {
     @Environment(\.managedObjectContext) var moc
     @FetchRequest(sortDescriptors: [SortDescriptor(\.name)]) var contacts: FetchedResults<Contact>
-    
-//    @State private var contacts = [Contact]()
 
-    @State private var showingAddScreen = false
+    @StateObject var viewModel = ViewModel()
     
     var body: some View {
         
         NavigationView {
             List {
-                ForEach(contacts) {contact in
+                ForEach(contacts, id: \.self) {contact in
                     NavigationLink {
-                        Text("pick one")
-//                        DetailView(book: book)
+                        ContactDetailView(name: contact.wrappedName,
+                                          image: viewModel.contactImages[contact.wrappedID])
                     } label: {
                         HStack {
-                            
-                            VStack(alignment: .leading) {
-                                Text(contact.name ?? "Unknown name")
-                                    .font(.headline)
+                            viewModel.contactImages[contact.wrappedID]?
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 40, height: 40.0)
 
-                                Text(contact.photo ?? "Unknown photo")
-                                    .foregroundColor(.secondary)
-                            }
+                            Text(contact.wrappedName)
                         }
                     }
                 }
+                .onDelete(perform: deleteContact)
             }
             .navigationTitle("Contacts")
             .toolbar {
@@ -45,15 +42,29 @@ struct ContentView: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
-                        showingAddScreen.toggle()
+                        viewModel.showingPicker.toggle()
                     } label: {
                         Label("Add Contact", systemImage: "plus")
                     }
                 }
             }
-            .sheet(isPresented: $showingAddScreen) {
-                AddContactView()
+            .sheet(isPresented: $viewModel.showingPicker) {
+                UIImagePicker(image: $viewModel.inputImage, sourceType: .photoLibrary)
             }
+            .sheet(isPresented: $viewModel.showingAddScreen) {
+                AddContactView(inputImage: $viewModel.inputImage, image: $viewModel.image)
+            }
+            .onChange(of: viewModel.inputImage) { _ in
+                viewModel.loadImage()
+            }
+            .onChange(of: viewModel.showingAddScreen) { _ in
+                loadImagesFromDisk()
+            }
+            .onAppear() {
+                loadImagesFromDisk()
+            }
+
+
         }
     }
     
