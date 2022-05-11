@@ -12,7 +12,7 @@ struct ContentView: View {
     @Environment(\.managedObjectContext) var moc
     @FetchRequest(sortDescriptors: [SortDescriptor(\.name)]) var contacts: FetchedResults<Contact>
 
-    @StateObject var viewModel = ViewModel()
+    @StateObject var viewModel: ViewModel
     
     var body: some View {
         
@@ -77,6 +77,9 @@ struct ContentView: View {
         }
     }
     
+    init() {
+        _viewModel = StateObject(wrappedValue: ViewModel())
+    }
 }
 
 struct ContentView_Previews: PreviewProvider {
