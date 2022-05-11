@@ -6,20 +6,20 @@
 //
 
 import SwiftUI
+import CoreLocation
 
 struct AddContactView: View {
-    @Environment(\.managedObjectContext) var moc
     @Environment(\.dismiss) private var dismiss
     
-    @Binding var inputImage: UIImage?
-    @Binding var image: Image?
-
-    @State private var name = ""
+    @ObservedObject var viewModel: ContentView.ViewModel
     
+    @State private var name = ""
+    @State private var location = CLLocationCoordinate2D(latitude: .zero, longitude: .zero)
+
     private var canSave: Bool {
         !name.isEmpty
     }
-        
+            
     var body: some View {
         
         NavigationView {
@@ -28,7 +28,7 @@ struct AddContactView: View {
                     .padding(.leading)
                     .font(.title)
             
-                image?
+                viewModel.image?
                     .resizable()
                     .scaledToFit()
                     .frame(minWidth: 0, maxWidth: .infinity)
@@ -42,10 +42,18 @@ struct AddContactView: View {
                     }
                 }
                 
+                ToolbarItem(placement: .automatic) {
+                    Button(action: {
+                        location = viewModel.locationFetcher.lastKnownLocation ?? CLLocationCoordinate2D(latitude: .zero, longitude: .zero)
+                    }, label: {
+                        Image(systemName: "location.magnifyingglass")
+                    })
+                }
+                
                 ToolbarItem(placement: .primaryAction) {
                     Button("Save") {
                         if canSave {
-                            saveContactToCD(name: name)
+                            viewModel.saveContactToCD(name: name, location: location)
                             dismiss()
                         }
                     }
@@ -54,39 +62,11 @@ struct AddContactView: View {
             }
         }
     }
-    
-    func saveContactToCD(name: String) {
-        let contact = Contact(context: moc)
-        contact.id = UUID()
-        contact.name = name
-        contact.photo = ""
-        
-        if moc.hasChanges {
-            do {
-                try moc.save()
-            } catch {
-                print("Error saving to CoreData - \(error.localizedDescription)")
-            }
-        }
-        
-        saveContactToDisk(contact: contact)
-    }
-    
-    func saveContactToDisk(contact: Contact) {
-        let savePath = FileManager.documentsDirectory.appendingPathComponent(contact.wrappedFileName)
-        do {
-            if let jpegData = inputImage?.jpegData(compressionQuality: 0.8) {
-                try jpegData.write(to: savePath, options: [.atomic, .completeFileProtection])
-            }
-        } catch {
-            print("Unable to save data.")
-        }
-    }
-
 }
+    
 
 struct AddContactView_Previews: PreviewProvider {
     static var previews: some View {
-        AddContactView(inputImage: .constant(UIImage(systemName: "bell.fill")), image: .constant(Image(systemName: "bell")))
+        AddContactView(viewModel: ContentView.ViewModel())
     }
 }

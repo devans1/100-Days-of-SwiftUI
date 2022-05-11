@@ -20,8 +20,9 @@ struct ContentView: View {
             List {
                 ForEach(contacts, id: \.self) {contact in
                     NavigationLink {
-                        ContactDetailView(name: contact.wrappedName,
-                                          image: viewModel.contactImages[contact.wrappedID])
+                        ContactDetailView(contact: contact,
+                                          image: viewModel.contactImages[contact.wrappedID],
+                                          location: contact.coordinate)
                     } label: {
                         HStack {
                             viewModel.contactImages[contact.wrappedID]?
@@ -33,7 +34,7 @@ struct ContentView: View {
                         }
                     }
                 }
-                .onDelete(perform: deleteContact)
+                .onDelete(perform: viewModel.deleteContact)
             }
             .navigationTitle("Contacts")
             .toolbar {
@@ -43,25 +44,33 @@ struct ContentView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
                         viewModel.showingPicker.toggle()
+                        viewModel.sourceType = .photoLibrary
                     } label: {
-                        Label("Add Contact", systemImage: "plus")
+                        Label("Add Contact", systemImage: "photo.on.rectangle.angled")
+                    }
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        viewModel.showingPicker.toggle()
+                        viewModel.sourceType = .camera
+                    } label: {
+                        Label("Add Contact", systemImage: "camera")
                     }
                 }
             }
-            .sheet(isPresented: $viewModel.showingPicker) {
-                UIImagePicker(image: $viewModel.inputImage, sourceType: .photoLibrary)
+            .sheet(isPresented: $viewModel.showingPicker, onDismiss: viewModel.imagePickerDismiss) {
+                UIImagePicker(image: $viewModel.inputImage,
+                              sourceType: viewModel.sourceType)
             }
             .sheet(isPresented: $viewModel.showingAddScreen) {
-                AddContactView(inputImage: $viewModel.inputImage, image: $viewModel.image)
-            }
-            .onChange(of: viewModel.inputImage) { _ in
-                viewModel.loadImage()
-            }
-            .onChange(of: viewModel.showingAddScreen) { _ in
-                loadImagesFromDisk()
+                AddContactView(viewModel: viewModel)
             }
             .onAppear() {
-                loadImagesFromDisk()
+                // TODO: this is not good, is there a better way
+                viewModel.moc = moc
+                viewModel.contacts = contacts
+                viewModel.loadImagesFromDisk()
+                viewModel.locationFetcher.start()
             }
 
 

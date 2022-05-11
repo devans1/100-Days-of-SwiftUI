@@ -14,8 +14,8 @@ struct UIImagePicker: UIViewControllerRepresentable {
     
     // note that this could be .camera to bring up the camera
     // see https://direct.appcoda.com/swiftui-camera-photo-library/
-    var sourceType: UIImagePickerController.SourceType = .photoLibrary
-    
+    var sourceType: UIImagePickerController.SourceType
+
     func makeUIViewController(context: Context) -> UIImagePickerController {
         let picker = UIImagePickerController()
         picker.allowsEditing = false
@@ -45,12 +45,11 @@ struct UIImagePicker: UIViewControllerRepresentable {
         }
         
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+            picker.dismiss(animated: true)
 
             if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
                 parent.image = image
             }
-
-            picker.dismiss(animated: true)
         }
         
     }

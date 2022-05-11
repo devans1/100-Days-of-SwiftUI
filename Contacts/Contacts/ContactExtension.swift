@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreLocation
 
 extension Contact {
     
@@ -24,7 +25,30 @@ extension Contact {
     var wrappedFileName: String {
         wrappedID + ".jpg"
     }
+    
+    var coordinate: CLLocationCoordinate2D {
+        get {
+            CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        }
+        set {
+            latitude = newValue.latitude
+            longitude = newValue.longitude
+        }
+    }
 
-    static let example = Contact()
+    
+    convenience init(name: String) {
+        self.init()
+        
+        self.name = name
+    }
+
+    static let example = Contact(name: "Fred")
 }
 
+extension CLLocationCoordinate2D: Equatable {
+    public static func == (lhs: CLLocationCoordinate2D, rhs: CLLocationCoordinate2D) -> Bool {
+        lhs.latitude == rhs.latitude &&
+        lhs.longitude == rhs.longitude
+    }
+}
