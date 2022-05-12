@@ -14,6 +14,8 @@ struct ContentView: View {
 
     @StateObject var viewModel: ViewModel
     
+    static var hasRunFirstTime = false
+    
     var body: some View {
         
         NavigationView {
@@ -67,12 +69,16 @@ struct ContentView: View {
             }
             .onAppear() {
                 // TODO: this is not good, is there a better way
-                viewModel.moc = moc
-                viewModel.contacts = contacts
-                viewModel.loadImagesFromDisk()
-                viewModel.locationFetcher.start()
-            }
+                if !ContentView.hasRunFirstTime {
+                    viewModel.moc = moc
+                    viewModel.contacts = contacts
+                    viewModel.loadImagesFromDisk()
+                    viewModel.locationFetcher.start()
+                    ContentView.hasRunFirstTime = true
+                    print("***************************** hasRunFirstTime *****************************")
+                }
 
+            }
 
         }
     }

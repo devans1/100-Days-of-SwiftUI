@@ -95,6 +95,7 @@ extension ContentView {
         }
 
         func deleteContact(at offsets: IndexSet) {
+
             for offset in offsets {
                 // find this contact in the fetch request
                 guard let contact = contacts?[offset] else { return }
@@ -107,10 +108,18 @@ extension ContentView {
                 if FileManager.default.fileExists(atPath: readPath) {
                     try? FileManager.default.removeItem(atPath: readPath)
                 }
+
+                // delete from the images array
+                contactImages[contact.wrappedID] = nil
             }
             
-            // save to CoreData
-            try? moc?.save()
+            if ((moc?.hasChanges) != nil) {
+                do {
+                    try moc?.save()
+                } catch {
+                    print("Error saving to CoreData - \(error.localizedDescription)")
+                }
+            }
         }
     }
 
