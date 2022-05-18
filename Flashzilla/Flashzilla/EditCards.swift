@@ -9,7 +9,9 @@ import SwiftUI
 
 struct EditCards: View {
     @Environment(\.dismiss) var dismiss
-    @State private var cards = [Card]()
+
+    @EnvironmentObject var deck: Cards
+
     @State private var newPrompt = ""
     @State private var newAnswer = ""
     
@@ -19,15 +21,19 @@ struct EditCards: View {
                 Section("Add new card") {
                     TextField("Prompt", text: $newPrompt)
                     TextField("Answer", text: $newAnswer)
-                    Button("Add card", action: addCard)
+                    Button("Add card") {
+                        deck.add(prompt: newPrompt, answer: newAnswer)
+                        newPrompt = ""
+                        newAnswer = ""
+                    }
                 }
                 
                 Section {
-                    ForEach(0..<cards.count, id: \.self) { index in
+                    ForEach(deck.cards) { card in
                         VStack(alignment: .leading) {
-                            Text(cards[index].prompt)
+                            Text(card.prompt)
                                 .font(.headline)
-                            Text(cards[index].answer)
+                            Text(card.answer)
                                 .foregroundColor(.secondary)
                         }
                     }
@@ -36,10 +42,14 @@ struct EditCards: View {
             }
             .navigationTitle("Edit Cards")
             .toolbar {
-                Button("Done", action: done)
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Done", action: done)
+                }
+                ToolbarItem(placement: .navigationBarLeading) {
+                    EditButton()
+                }
             }
             .listStyle(.grouped)
-            .onAppear(perform: loadData)
         }
     }
     
@@ -47,33 +57,8 @@ struct EditCards: View {
         dismiss()
     }
     
-    func loadData() {
-        if let data = UserDefaults.standard.data(forKey: "Cards") {
-            if let decoded = try? JSONDecoder().decode([Card].self, from: data) {
-                cards = decoded
-            }
-        }
-    }
-    
-    func saveData() {
-        if let data = try? JSONEncoder().encode(cards) {
-            UserDefaults.standard.set(data, forKey: "Cards")
-        }
-    }
-    
-    func addCard() {
-        let trimmedPrompt = newPrompt.trimmingCharacters(in: .whitespaces)
-        let trimmedAnswer = newAnswer.trimmingCharacters(in: .whitespaces)
-        guard trimmedPrompt.isEmpty == false && trimmedAnswer.isEmpty == false else { return }
-        
-        let card = Card(prompt: trimmedPrompt, answer: trimmedAnswer)
-        cards.insert(card, at: 0)
-        saveData()
-    }
-    
     func removeCards(at offsets: IndexSet) {
-        cards.remove(atOffsets: offsets)
-        saveData()
+        deck.remove(at: offsets)
     }
 }
 

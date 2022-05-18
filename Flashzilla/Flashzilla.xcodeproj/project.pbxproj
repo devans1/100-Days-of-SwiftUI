@@ -14,6 +14,7 @@
 		61A93CE2283204DD00682359 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A93CE1283204DD00682359 /* Card.swift */; };
 		61A93CE42832053C00682359 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A93CE32832053C00682359 /* CardView.swift */; };
 		61A93CE62833062C00682359 /* EditCards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A93CE52833062C00682359 /* EditCards.swift */; };
+		61B30BF728346009001CF9E8 /* FileManager-DocumentsDirectory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B30BF628346009001CF9E8 /* FileManager-DocumentsDirectory.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +26,7 @@
 		61A93CE1283204DD00682359 /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		61A93CE32832053C00682359 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		61A93CE52833062C00682359 /* EditCards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCards.swift; sourceTree = "<group>"; };
+		61B30BF628346009001CF9E8 /* FileManager-DocumentsDirectory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "FileManager-DocumentsDirectory.swift"; path = "../../BucketList/BucketList/FileManager-DocumentsDirectory.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,8 +62,9 @@
 				61A93CD3283204A000682359 /* FlashzillaApp.swift */,
 				61A93CD5283204A000682359 /* ContentView.swift */,
 				61A93CE32832053C00682359 /* CardView.swift */,
-				61A93CE1283204DD00682359 /* Card.swift */,
 				61A93CE52833062C00682359 /* EditCards.swift */,
+				61A93CE1283204DD00682359 /* Card.swift */,
+				61B30BF628346009001CF9E8 /* FileManager-DocumentsDirectory.swift */,
 				61A93CD7283204A200682359 /* Assets.xcassets */,
 				61A93CD9283204A200682359 /* Preview Content */,
 			);
@@ -146,6 +149,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				61B30BF728346009001CF9E8 /* FileManager-DocumentsDirectory.swift in Sources */,
 				61A93CD6283204A000682359 /* ContentView.swift in Sources */,
 				61A93CE2283204DD00682359 /* Card.swift in Sources */,
 				61A93CE42832053C00682359 /* CardView.swift in Sources */,

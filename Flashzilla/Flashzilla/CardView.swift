@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CardView: View {
     let card: Card
-    var removal: (() -> Void)? = nil    // ***** because this is declared after the card, it gets to be a "trailing closure" and observes trailing closure syntax!!!!!!
+    var removal: ((_ reTry: Bool) -> Void)? = nil    // ***** because this is declared after the card, it gets to be a "trailing closure" and observes trailing closure syntax!!!!!!
     
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
     @Environment(\.accessibilityVoiceOverEnabled) var voiceOverEnabled
@@ -27,12 +27,14 @@ struct CardView: View {
                     ? .white
                     : .white.opacity(1 - Double(abs(offset.width / 50)))
                 )
-                .background(
-                    differentiateWithoutColor
-                    ? nil
-                    : RoundedRectangle(cornerRadius: 25, style: .continuous)
-                        .fill(offset.width > 0 ? .green : .red)
-                )
+                .cardStyle(offset: offset,
+                           differentiateWithoutColor: differentiateWithoutColor)
+//                .background(
+//                    differentiateWithoutColor
+//                    ? nil
+//                    : RoundedRectangle(cornerRadius: 25, style: .continuous)
+//                        .fill(offset.width > 0 ? .green : .red)
+//                )
                 .shadow(radius: 10)
             
             VStack {
@@ -69,13 +71,17 @@ struct CardView: View {
                 .onEnded({ _ in
                     if abs(offset.width) > 100 {
                         // remove the card
+                        // haptics
                         if offset.width < 0 {
 //                            feedback.notificationOccurred(.success) // you can overdo haptics so remove this one
 //                        } else {
                             feedback.notificationOccurred(.error)
                         }
                         
-                        removal?()
+                        removal?(offset.width < 0)
+                        if offset.width < 0 {
+                            offset = .zero
+                        }
                     } else {
                         offset = .zero
                     }
@@ -88,6 +94,41 @@ struct CardView: View {
         
     }
 }
+
+struct CardBG: ViewModifier {
+    let offset: CGSize
+    let differentiateWithoutColor: Bool
+    
+    var col : Color {
+        get {
+            if offset.width > 0 {
+                return .green
+            } else if offset.width < 0 {
+                return .red
+            }
+            return .white
+        }
+    }
+    
+    func body(content: Content) -> some View {
+        if differentiateWithoutColor {
+            content
+        } else {
+            content
+                .background(
+                    RoundedRectangle(cornerRadius: 25, style: .continuous)
+                        .fill(col)
+                )
+        }
+    }
+}
+
+extension View {
+    func cardStyle(offset: CGSize, differentiateWithoutColor: Bool) -> some View {
+        modifier(CardBG(offset: offset, differentiateWithoutColor: differentiateWithoutColor))
+    }
+}
+
 
 struct CardView_Previews: PreviewProvider {
     static var previews: some View {

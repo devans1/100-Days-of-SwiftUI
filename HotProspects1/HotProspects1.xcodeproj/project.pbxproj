@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		61A93CAA282DDD0500682359 /* ImageSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A93CA9282DDD0500682359 /* ImageSaver.swift */; };
-		61A93CAC282E0E9100682359 /* FileManager-DocumentsDirectory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A93CAB282E0E9100682359 /* FileManager-DocumentsDirectory.swift */; };
+		61B30BF9283460F5001CF9E8 /* FileManager-DocumentsDirectory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B30BF8283460F5001CF9E8 /* FileManager-DocumentsDirectory.swift */; };
 		61CB51BD282CCAA200BCF754 /* HotProspects1App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61CB51BC282CCAA200BCF754 /* HotProspects1App.swift */; };
 		61CB51BF282CCAA200BCF754 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61CB51BE282CCAA200BCF754 /* ContentView.swift */; };
 		61CB51C1282CCAA300BCF754 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 61CB51C0282CCAA300BCF754 /* Assets.xcassets */; };
@@ -21,7 +21,7 @@
 
 /* Begin PBXFileReference section */
 		61A93CA9282DDD0500682359 /* ImageSaver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImageSaver.swift; path = ../../Instafilter/Instafilter/ImageSaver.swift; sourceTree = "<group>"; };
-		61A93CAB282E0E9100682359 /* FileManager-DocumentsDirectory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "FileManager-DocumentsDirectory.swift"; path = "../../Contacts/Contacts/FileManager-DocumentsDirectory.swift"; sourceTree = "<group>"; };
+		61B30BF8283460F5001CF9E8 /* FileManager-DocumentsDirectory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "FileManager-DocumentsDirectory.swift"; path = "../../Flashzilla/Flashzilla/FileManager-DocumentsDirectory.swift"; sourceTree = "<group>"; };
 		61CB51B9282CCAA200BCF754 /* HotProspects1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HotProspects1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		61CB51BC282CCAA200BCF754 /* HotProspects1App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotProspects1App.swift; sourceTree = "<group>"; };
 		61CB51BE282CCAA200BCF754 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -69,7 +69,7 @@
 				61CB51CC282CCB9800BCF754 /* MeView.swift */,
 				61A93CA9282DDD0500682359 /* ImageSaver.swift */,
 				61CB51CE282CCED800BCF754 /* Prospect.swift */,
-				61A93CAB282E0E9100682359 /* FileManager-DocumentsDirectory.swift */,
+				61B30BF8283460F5001CF9E8 /* FileManager-DocumentsDirectory.swift */,
 				61CB51C0282CCAA300BCF754 /* Assets.xcassets */,
 				61CB51C2282CCAA300BCF754 /* Preview Content */,
 			);
@@ -161,7 +161,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				61CB51CD282CCB9800BCF754 /* MeView.swift in Sources */,
-				61A93CAC282E0E9100682359 /* FileManager-DocumentsDirectory.swift in Sources */,
+				61B30BF9283460F5001CF9E8 /* FileManager-DocumentsDirectory.swift in Sources */,
 				61A93CAA282DDD0500682359 /* ImageSaver.swift in Sources */,
 				61CB51CF282CCED800BCF754 /* Prospect.swift in Sources */,
 				61CB51CB282CCB7E00BCF754 /* ProspectsView.swift in Sources */,
