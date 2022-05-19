@@ -49,23 +49,43 @@ struct InnerView: View {
 
 struct ContentView: View {
     let colors: [Color] = [.red, .green, .blue, .orange, .pink, .purple, .yellow]
+    let opacityStart = 300.0
     
     var body: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 0) {
-                ForEach(1..<20) { num in
+        GeometryReader { fullView in
+            ScrollView(.vertical) {
+                ForEach(0..<50) { index in
                     GeometryReader { geo in
-                        Text("Number \(num)")
-                            .font(.largeTitle)
-                            .padding()
-                            .background(colors[num % 7])
-                            .rotation3DEffect(.degrees(-geo.frame(in: .global).minX) / 8, axis: (x: 0, y: 1, z: 0))
-                            .frame(width: 200, height: 200)
+                        let posnFromTop = geo.frame(in: .global).minY
+                        let posnFromTopPercent = max(0.6, posnFromTop / (fullView.size.height / 2.0))
+                        Text("Row #\(index)")
+                            .font(.title)
+                            .frame(maxWidth: .infinity)
+//                            .background(colors[index % 7])
+                            .background(Color(hue: min(1, geo.frame(in: .global).minY / fullView.size.height), saturation: 1, brightness: 1))
+                            .rotation3DEffect(.degrees(geo.frame(in: .global).minY - fullView.size.height / 2) / 5, axis: (x: 0, y: 1, z: 0))
+                            .opacity(posnFromTop / opacityStart)
+                            .scaleEffect(CGSize(width: posnFromTopPercent, height: posnFromTopPercent))
                     }
-                    .frame(width: 200, height: 200)
+                    .frame(height: 40)
                 }
             }
         }
+//        ScrollView(.horizontal, showsIndicators: false) {
+//            HStack(spacing: 0) {
+//                ForEach(1..<20) { num in
+//                    GeometryReader { geo in
+//                        Text("Number \(num)")
+//                            .font(.largeTitle)
+//                            .padding()
+//                            .background(colors[num % 7])
+//                            .rotation3DEffect(.degrees(-geo.frame(in: .global).minX) / 8, axis: (x: 0, y: 1, z: 0))
+//                            .frame(width: 200, height: 200)
+//                    }
+//                    .frame(width: 200, height: 200)
+//                }
+//            }
+//        }
 //        GeometryReader { fullView in
 //            ScrollView {
 //                ForEach(0..<50) { index in
