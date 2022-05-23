@@ -10,5 +10,7 @@
         <page name='Day 13+'/>
         <page name='Day 16+'/>
         <page name='Dictionary'/>
+        <page name='Dice'/>
+        <page name='SwiftUI'/>
     </pages>
 </playground>
