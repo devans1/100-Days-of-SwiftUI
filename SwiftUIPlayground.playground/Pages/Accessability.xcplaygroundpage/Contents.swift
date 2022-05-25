@@ -1,3 +1,5 @@
+//: [Previous](@previous)
+
 import UIKit
 import PlaygroundSupport
 import SwiftUI
@@ -8,20 +10,30 @@ import SwiftUI
 //    }
 //}
 
-struct ContentView: View {
+struct Test: View {
     var body: some View {
-        TimelineView(.animation) { context in
-            let value = secondsValue(for: context.date)
-
-            Circle()
-                .trim(from: 0, to: value)
-                .stroke()
-        }
+        Text("Hmm")
     }
+}
 
-    private func secondsValue(for date: Date) -> Double {
-        let seconds = Calendar.current.component(.second, from: date)
-        return Double(seconds) / 60
+
+struct ContentView: View {
+    let Test1: Test? = nil
+    let Test2: Test? = Test()
+    
+    let a : 
+
+    var body: some View {
+        
+        VStack {
+            Circle()
+                .frame(minWidth: 200)
+            Text("Hmmm")
+            Test()
+            Test1
+            Test2
+            Capsule(style: .continuos
+        }
     }
 }
 
@@ -31,3 +43,5 @@ PlaygroundPage.current.liveView = viewController
 PlaygroundPage.current.needsIndefiniteExecution = true
 
 
+
+//: [Next](@next)
